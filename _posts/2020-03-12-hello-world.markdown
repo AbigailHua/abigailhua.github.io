@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Prologue"
-subtitle:   "Hello World | My Very First Post""
+subtitle:   "Hello World | My Very First Post"
 date:       2020-03-12 12:00:00
 author:     "AH"
 header-img: "img/post-bg-2015.jpg"
