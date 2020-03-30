@@ -42,6 +42,7 @@ gems: [jekyll-paginate]
 # document: http://jekyllrb.com/docs/configuration/#kramdown
 markdown: kramdown
 kramdown:
+  math_engine: katex
   input: GFM                            # use Github Flavored Markdown !important
 
 
