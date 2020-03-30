@@ -59,23 +59,29 @@ $$
 过滤式给每个特征打分，按分数高低排名，可以按threshold筛选，也可以选取前k个。
 
 卡方检验Chi Squared Test是一种很典型的过滤式方法。
+
 $$
 \sum_{i=1}^n \frac{(f_i-E)^2}{E}
 $$
+
 上面这个式子就是卡方检验的衡量公式。f是实际值，E是理论值，将样本$f_1, f_2, ..., f_n$代入上面的式子计算卡方值。
 
 我们的原假设是特征f与类别C无关，因此卡方值越大，偏离原假设的程度越大，也就是说卡方值越大f与C越相关。计算了卡方值就可以按照设定的阈值对f进行筛选。
 
 另一种常用的过滤式方法是信息增益 Information Gain:
+
 $$
 IG(X, Z) = H(X) - H(X \mid Z) = H(Z) - H(Z \mid X)
 $$
+
 信息增益也叫互信息 Mutual Information，满足交换律和非负性。
 
 此外，容易推导信息增益和KL散度的关系
+
 $$
 IG(X, Z) = KL(p(x, z) \parallel p(x)p(z))
 $$
+
 我们可以计算$IG(f, C)$，表示了包含或不包含特征f时，为分类器C的识别能提供多少信息量。
 
 此外在作业中我们使用了另一种方法，就是计算每个特征的方差来进行筛选。这种方法基于这样的思想：如果大多数样本在某一特征f上都取同一个值，这个特征就比较鸡肋。所以可以计算每个特征f的方差，低于某个阈值就去除。一般将阈值设为$0.8*(1-0.8)$。
@@ -91,18 +97,23 @@ $$
 嵌入式在创建模型的同时选择对模型分类准确率最有帮助的那些特征，常见类型是正则化方法，例如LASSO、Elastic Net和岭回归 Ridge Regression。
 
 假设样本都去中心化了，即$\sum_{i=1}^nx_i=0$，线性回归的优化目标就可以记作
+
 $$
 \beta^* = argmin_\beta \frac{1}{n} \sum_{i=0}^n (y_i-\beta^Tx_i)
 $$
+
 这里的$\beta$不包含偏置项。
 
 为了使模型不那么复杂，需要对$\beta$的模进行限制，LASSO和岭回归的区别就在于正则项使用L1还是L2范数：
 
 LASSO的优化目标是
+
 $$
 \beta^* = argmin_\beta \frac{1}{n} \parallel y-X\beta\parallel^2_2 + \lambda \parallel \beta\parallel_1
 $$
+
 岭回归的优化目标是
+
 $$
 \beta^* = argmin_\beta \frac{1}{n} \parallel y-X\beta\parallel^2_2 + \lambda \parallel\beta\parallel_2^2
 $$
@@ -124,35 +135,42 @@ PCA的思想是将高维映射到相互正交的k维上。
 有两种等价的形式化表述：
 
 1. max 投射后向量长度的方差（当X去中心化时）
-   $$
-   \frac{1}{n}\sum_{i=1}^n (v^Tx_i)^2 = \frac{1}{n} v^TXX^Tv
-   $$
+
+$$
+\frac{1}{n}\sum_{i=1}^n (v^Tx_i)^2 = \frac{1}{n} v^TXX^Tv
+$$
 
 2. min 重建误差
-   $$
-   \frac{1}{n}\sum_{i=1}^n \parallel X_i-(v^Tx_i)v\parallel^2
-   $$
+
+$$
+\frac{1}{n}\sum_{i=1}^n \parallel X_i-(v^Tx_i)v\parallel^2
+$$
 
 由于两种表述等价，这里只推导第一种。
 
 抽象成优化问题
+
 $$
 \max_v \quad v^TXX^Tv \\
 s.t.\quad v^Tv = 1
 $$
+
 Lagrangian:
+
 $$
 \mathcal L_v = v^TXX^Tv + \lambda(1-v^Tv) \\
 \frac{\partial \mathcal L_v}{\partial v} = XX^Tv - \lambda v = 0 \\
 XX^Tv = \lambda v
 $$
+
 所以$\lambda$是矩阵$XX^T$的特征值，v是特征向量。
 
 降维取多少维，是按照特征值从大到小取前多少个特征向量。例如要降到N维，就取最大的N个特征值对应的特征向量。
 
 #### Kernel PCA
 
-将上面推导的式子中$X$换成$\phi(X)$，$v$换成$\phi(X)\alpha$
+将上面推导的式子中$X$换成$\phi(X)$，$v$换成$\phi(X)\alpha$：
+
 $$
 \begin{aligned}
 &\qquad XX^Tv = \lambda v \\
@@ -166,6 +184,7 @@ $$
 #### LDA
 
 LDA的思想是找一个方向，使得类间的间距最大，同时类内的间距又较小，从而能够方便的区分不同类别。
+
 $$
 \begin{aligned}
 J(v) &= \frac{(v^T\mu_1-v^T\mu_2)^2}{\sigma_1^2+\sigma_2^2} \\
@@ -174,12 +193,16 @@ J(v) &= \frac{(v^T\mu_1-v^T\mu_2)^2}{\sigma_1^2+\sigma_2^2} \\
 &= \frac{v^TS_Bv}{v^TS_Wv}
 \end{aligned}
 $$
+
 虽然$v$的大小可以任意变化，但是我们并不关心，所以可以假设$v^TS_Wv=1$，所以可以转化为优化问题：
+
 $$
 max_v \quad v^TS_Bv \\
 s.t. \quad v^TS_Wv = 1
 $$
+
 Lagrangian:
+
 $$
 \begin{aligned}
 &\qquad \mathcal L = v^TS_Bv - \lambda(v^TS_Wv-1) \\
@@ -188,6 +211,7 @@ $$
 &\Rightarrow S_W^{-1} S_B v = \lambda v
 \end{aligned}
 $$
+
 因此，$v$是矩阵$S_W^{-1}S_B$的特征向量。
 
 #### 自动编码器 Auto-Encoder
@@ -207,10 +231,12 @@ $$
 VAE的编码器和解码器学到的并不是向量，而是概率分布。例如编码器网络中，学到的是期望为$\mu_z$，方差为$\sigma_z$的一个高斯分布，并从中采样出$z^i$，解码器网络同理。
 
 VAE最终的优化目标是
+
 $$
 min_{\theta_1, \theta_2}\quad KL[q_{\theta_2}(z \mid x^i) \parallel p(z)] - \log p_{\theta_1}(x^i \mid z^i)
 $$
-KL散度是控制$z$的误差，log是重构x的误差
+
+KL散度是控制$z$的误差，log是重构x的误差。
 
 ### 特征学习 Feature Learning
 
