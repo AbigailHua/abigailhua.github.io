@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Dimensionality Reduction"
-subtitle:   "Supplementary"
+subtitle:   "Supplementation"
 date:       2020-03-31 21:30:00
 author:     "AH"
 header-img: "img/post-bg-2015.jpg"
@@ -82,15 +82,15 @@ $$
 IG(X, Z) = KL(p(x, z) \parallel p(x)p(z))
 $$
 
-我们可以计算$IG(f, C)$，表示了包含或不包含特征f时，为分类器C的识别能提供多少信息量。
+我们可以计算$IG(f, C)$，它表示了包含或不包含特征f时，为分类器C的识别能提供多少信息量。
 
-此外在作业中我们使用了另一种方法，就是计算每个特征的方差来进行筛选。这种方法基于这样的思想：如果大多数样本在某一特征f上都取同一个值，这个特征就比较鸡肋。所以可以计算每个特征f的方差，低于某个阈值就去除。一般将阈值设为$0.8*(1-0.8)$。
+除了以上介绍的卡方检测和信息增益，在作业中我们实际使用了另一种方法，就是计算每个特征的方差来进行筛选。这种方法基于这样的思想：如果大多数样本在某一特征f上都取同一个值，这个特征就比较鸡肋，不要也罢。所以可以计算每个特征f的方差，低于某个阈值就去除。一般将阈值设为$0.8*(1-0.8)$。
 
 #### 包裹式
 
 包裹式将特征选择的过程视为一个搜索问题。评价函数能够给每种特征组合进行打分，目标是找到打分高的特征子集。
 
-课程中提到的前向和后向搜索都属于包裹式的方法。当然，前向和后向搜索本身都是一类方法，可以用不同的判定标准来决定是否保留或去除特征。
+课程中提到的前向和后向搜索都属于包裹式的方法。当然，前向和后向搜索本身都不是一种方法，而是一类方法，可以用不同的判定标准来决定是否保留或去除特征。
 
 #### 嵌入式
 
@@ -118,7 +118,7 @@ $$
 \beta^* = argmin_\beta \frac{1}{n} \parallel y-X\beta\parallel^2_2 + \lambda \parallel\beta\parallel_2^2
 $$
 
-那如何使用LASSO和岭回归进行特征选择呢？很简单，$\beta^*$的元素越大，对应的特征权重越大，依此选择特征即可。
+那如何使用LASSO和岭回归进行特征选择呢？很简单，$\beta^*$里的元素越大，对应的特征权重越大，依此选择特征即可。
 
 ### 特征投影 Feature Projection
 
@@ -194,7 +194,7 @@ J(v) &= \frac{(v^T\mu_1-v^T\mu_2)^2}{\sigma_1^2+\sigma_2^2} \\
 \end{aligned}
 $$
 
-虽然$v$的大小可以任意变化，但是我们并不关心，所以可以假设$v^TS_Wv=1$，所以可以转化为优化问题：
+虽然$v$的长度可以任意变化，但是我们并不关心它，所以可以假设$v^TS_Wv=1$，就转化成以下优化问题：
 
 $$
 max_v \quad v^TS_Bv \\
@@ -205,8 +205,8 @@ Lagrangian:
 
 $$
 \begin{aligned}
-&\qquad \mathcal L = v^TS_Bv - \lambda(v^TS_Wv-1) \\
-&\Rightarrow \frac{\partial \mathcal L}{\partial v} = 2S_B v - 2\lambda S_Wv = 0 \\
+&\qquad \mathcal L_v = v^TS_Bv - \lambda(v^TS_Wv-1) \\
+&\Rightarrow \frac{\partial \mathcal L_v}{\partial v} = 2S_B v - 2\lambda S_Wv = 0 \\
 &\Rightarrow S_Bv = \lambda S_W v \\
 &\Rightarrow S_W^{-1} S_B v = \lambda v
 \end{aligned}
@@ -216,9 +216,9 @@ $$
 
 #### 自动编码器 Auto-Encoder
 
-自动编码器是一种无监督学习，通过让重构数据逼近原始数据，自动编码器不需要手工标注的数据就可以完成训练。
+自动编码器是一种无监督学习，通过让重构数据逼近原始数据，不需要手工标注的数据就可以完成训练。
 
-如图所示，自动编码器由编码器、bottleneck和解码器三部分组成。bottleneck就是我们所需要的低维特征（图示中是漏斗形的，可获得低维特征，也少数自动编码器的bottleneck比原始数据维数更高，可以增加数据的维数）。训练完成后，我们不需要解码器，将数据输入编码器就可以得到低维特征。
+如图所示，自动编码器由编码器、bottleneck和解码器三部分组成。bottleneck就是我们所需要的低维特征（图示中是漏斗形的，可获得低维特征，也有少数自动编码器的bottleneck比原始数据维数更高，可以增加数据的维数）。训练完成后，我们不需要解码器，将数据输入编码器就可以输出低维特征。
 
 <img src="/img/in-post/post-dimensionality-reduction/auto-encoder.png"/>
 
@@ -236,7 +236,7 @@ $$
 min_{\theta_1, \theta_2}\quad KL[q_{\theta_2}(z \mid x^i) \parallel p(z)] - \log p_{\theta_1}(x^i \mid z^i)
 $$
 
-KL散度是控制$z$的误差，log是重构x的误差。
+其中KL散度是控制$z$的误差，log是重构x的误差。
 
 ### 特征学习 Feature Learning
 
