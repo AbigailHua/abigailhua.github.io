@@ -15,12 +15,12 @@ tags:
 
 这就引发了高维诅咒的问题：
 
-1. 高维诅咒对时间和空间复杂度提出了很高的要求。存储的成本和耗时都将增加。
-2. 对于同样数量的样本，在更高维度空间中就会变得稀疏，所以高维空间需要更多训练样本来填充整个空间。从另一个角度来说，这也会增加模型的复杂度，导致过拟合*（模型复杂度、训练样本少）*的风险。
+* 高维诅咒对时间和空间复杂度提出了很高的要求。存储的成本和耗时都将增加。
+* 对于同样数量的样本，在更高维度空间中就会变得稀疏，所以高维空间需要更多训练样本来填充整个空间。从另一个角度来说，这也会增加模型的复杂度，导致过拟合*（模型复杂度、训练样本少）*的风险。
 
 <img src="/img/in-post/post-dimensionality-reduction/performance.png"/>
 
-3. 高维物体的体积集中在表面：
+* 高维物体的体积集中在表面：
 
 $$
 \lim_{d\rightarrow\infty} \frac{V_d(1-\epsilon)}{V_d(1)} = \lim_{d\rightarrow\infty}(1-\epsilon)^d=0
@@ -134,13 +134,13 @@ PCA的思想是将高维映射到相互正交的k维上。
 
 有两种等价的形式化表述：
 
-1. max 投射后向量长度的方差（当X去中心化时）
+* max 投射后向量长度的方差（当X去中心化时）
 
 $$
 \frac{1}{n}\sum_{i=1}^n (v^Tx_i)^2 = \frac{1}{n} v^TXX^Tv
 $$
 
-2. min 重建误差
+* min 重建误差
 
 $$
 \frac{1}{n}\sum_{i=1}^n \parallel X_i-(v^Tx_i)v\parallel^2
@@ -155,7 +155,7 @@ $$
 s.t.\quad v^Tv = 1
 $$
 
-Lagrangian:
+Lagrange multiplier:
 
 $$
 \mathcal L_v = v^TXX^Tv + \lambda(1-v^Tv) \\
@@ -183,7 +183,7 @@ $$
 
 #### LDA
 
-LDA的思想是找一个方向，使得类间的间距最大，同时类内的间距又较小，从而能够方便的区分不同类别。
+LDA的思想是找一个方向，使得在这个方向上类间的间距最大，同时类内的间距又较小，从而能够方便的区分不同类别。
 
 $$
 \begin{aligned}
@@ -201,7 +201,7 @@ max_v \quad v^TS_Bv \\
 s.t. \quad v^TS_Wv = 1
 $$
 
-Lagrangian:
+Lagrange multiplier:
 
 $$
 \begin{aligned}
