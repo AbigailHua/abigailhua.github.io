@@ -52,9 +52,7 @@ public:
 
 ### 思路
 
-第一遍正向遍历数空格；
-
-第二遍逆向遍历挪数据
+第一遍正向遍历数空格；第二遍逆向遍历挪数据
 
 ### 代码
 
@@ -215,9 +213,8 @@ private:
 
 ### 题目描述
 
-把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
-输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。
-例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。
+
 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
 
 ### 思路
@@ -522,8 +519,6 @@ public:
 
 
 
-
-
 ## 15. 反转链表
 
 ### 题目描述
@@ -642,17 +637,27 @@ public:
 
 
 > 二叉树的镜像定义：源二叉树 
+> 
 > 	     8
+> 	     
 > 	    /  \
+> 	    
 > 	  6   10
+> 	  
 >  	 / \  / \
+>  	 
 >  	5  7 9 11
 >
 > 镜像二叉树
+> 
 > 	     8
+> 	     
 > 	    /  \
+> 	    
 > 	  10   6
+> 	  
 >  	 / \  / \
+>  	 
 > 	11 9 7  5
 
 ### 思路
@@ -858,3 +863,43 @@ public:
 
 
 
+## 23. 二叉搜索树的后序遍历序列
+
+### 题目描述
+
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+
+### 思路
+
+递归：后序遍历，末尾总是根结点；以第一个比根大的数为界划分左右子树，看右子树是否有比根小的节点；递归左右子树。
+
+### 代码
+
+```C++
+class Solution {
+public:
+    bool verify(vector<int> arr, int start, int end){
+        if(start==end) return 1;
+        int root = arr[end];
+        int pos=start;
+        for(; pos<end; pos++)
+            if(arr[pos]>root) break;
+        int np = pos;
+        for(; np<end; np++){
+            if(arr[np]<root) return 0;
+        }
+        if(pos==start or pos==end) return 1;
+        return verify(arr, start, pos-1) and verify(arr, pos, end);
+    }
+    
+    bool VerifySquenceOfBST(vector<int> sequence) {
+        int size = sequence.size();
+        if(size==0) return 0;
+        return verify(sequence, 0, size-1);
+    }
+};
+```
+
+
+
+### *To Be Continued...*
