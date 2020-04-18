@@ -2,30 +2,48 @@
 layout:     post
 title:      "Basic Machine Learning"
 subtitle:   "人工智能课笔记（一）"
-date:       2019-11-05 10:38:00
+date:       2020-04-18 10:38:00
 author:     "AH"
 header-img: "img/post-bg-2015.jpg"
 tags:
     - AI
 ---
 
+注：这是上学期上人工智能课时整理的笔记，现在po到博客上来，方便浏览。
+
+当时课程参考斯坦福（后来换成了伯克利）的人工智能课，教材理论上应该是*Artificial Intelligence: A Modern Approach*，但是某马姓老师上课质量和在我们反馈后采取的态度实在是不敢恭维，此处暂且按下不表了。
+
+笔记总共写了四篇：
+
+1. [Basic Machine Learning](https://abigailhua.github.io/2019/11/05/Basic-Machine-Learning/)
+2. [MDP](https://abigailhua.github.io/2019/11/05/MDP/)
+3. [Search](https://abigailhua.github.io/2019/11/05/Search/)
+4. [Reinforcement Learning](https://abigailhua.github.io/2019/11/05/RL/)
+
 # Machine Learning
 
 ### Linear Predictors
 
 Feature vector:
+
 $$
 \phi(x) = [\phi_1(x), ..., \phi_d(x)] \in R^d
 $$
+
 Weight vector: 
+
 $$
 w(x) = [w_1(x), ..., w_d(x)] \in R^d
 $$
+
 Score (how confident we are in predicting +1):
+
 $$
 w \cdot \phi(x) = \sum_{j=1}^d w_j \phi_j(x)
 $$
+
 (Binary) linear classifier: 
+
 $$
 f_w(x)=sign(w \cdot \phi(x))
 $$
@@ -33,9 +51,11 @@ $$
 ### Loss Minimization
 
 Margin (how correct we are):
+
 $$
 (w \cdot \phi(x))y = score \cdot y
 $$
+
 Note: a binary classifier errors when margin is negative
 
 #### Binary Classification
@@ -68,14 +88,19 @@ $$
 <img src="\img\in-post\post-basic-machine-learning\1572591395247.png" width="500">
 
 Residual (the amount by which prediction $f_w(x)$ overshoots the target $y$:
+
 $$
 w \cdot \phi(x) - y
 $$
+
 Square loss (min: mean $y$):
+
 $$
 Loss_{squared}(x, y, w) = (f_w(x)-y)^2 = (w \cdot \phi(x) - y)^2 = residual^2
 $$
+
 Absolute deviation loss (min: median $y$):
+
 $$
 Loss_{absdev}(x, y, w) = |f_w(x)-y| =|w \cdot \phi(x)-y| = |residual|
 $$
@@ -97,13 +122,17 @@ $$
 <img src="\img\in-post\post-basic-machine-learning\1572592764984.png" width="350">
 
 Objective function (train loss using square loss):
+
 $$
 TrainLoss(w) = \frac{1}{D_{train}} \sum_{(x, y)\in D_{train}} (w \cdot \phi(x) - y)^2
 $$
+
 Gradient:
+
 $$
 \nabla_w TrainLoss(w) = \frac{1}{D_{train}} \sum_{(x, y)\in D_{train}} 2(w \cdot \phi(x) - y) \phi(x)
 $$
+
 Problem: each iteration requires going over all training examples (long training time)
 
 #### Stochastic Gradient Descent
@@ -120,9 +149,11 @@ Strategies:
 ### Summary I
 
 Score: 
+
 $$
 w \cdot \phi(x)
 $$
+
 <img src="\img\in-post\post-basic-machine-learning\1572593777621.png" width="500">
 
 ### Features
@@ -139,10 +170,13 @@ e.g. spam:
 #### Feature Vector Representations
 
 Array representation (for dense features):
+
 $$
 [0.85, 0, 0, 0, 0, 1, 0, 0, 0]
 $$
+
 Map representation (for sparse features):
+
 $$
 {"fracOfAlpha": 0.85, "contains\_@": 1}
 $$
@@ -158,10 +192,13 @@ $$
 Linear classifiers can produce non-linear decision boundaries.
 
 Quadratic functions:
+
 $$
 \phi(x) = [x, x^2]
 $$
+
 Piecewise constant function:
+
 $$
 \phi(x) = [1[0<x\leq1], 1[1<x<2], ...]
 $$
@@ -169,22 +206,28 @@ $$
 ### Neural Networks
 
 Logistic function $(-\infty, \infty) \rightarrow [0, 1]$:
+
 $$
 \sigma(z) = (1+e^{-z})^{-1}\\
 \nabla \sigma(z) = \sigma(z) (1-\sigma(z))
 $$
+
 Neural network:
 
 <img src="\img\in-post\post-basic-machine-learning\1572700675975.png" width="500">
 
 Intermediate hidden units:
+
 $$
 h_j = \sigma(v_j \cdot \phi(x)), \sigma(z) = (1+e^{-z})^{-1}
 $$
+
 Output:
+
 $$
 score = w \cdot h
 $$
+
 Difference with machine learning: features is specified in ML, but learned in NN
 
 ### Backpropagation
@@ -253,17 +296,21 @@ Put similar points in same cluster and dissimilar in different clusters.
 <img src="\img\in-post\post-basic-machine-learning\1572769279539.png" width="400">
 
 Objective function:
+
 $$
 Loss_{kmeans}(z, \mu) = \sum_{i=1}^n || \phi(x_i)-\mu_{z_i}||^2
 $$
+
 where $\mu_{z_i}$ is the centroid of cluster $k$
 
 #### K-Means Algorithm
 
 Objective:
+
 $$
 \min_z \min_{\mu} Loss_{kmeans}(z, \mu)
 $$
+
 <img src="\img\in-post\post-basic-machine-learning\1572770543977.png" width="400">
 
 Goal: given centroids $\mu_1, \mu_2,..., \mu_K$ , assign each point to the best centroid.
