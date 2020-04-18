@@ -15,10 +15,10 @@ tags:
 
 笔记总共写了四篇：
 
-1. [Basic Machine Learning](https://abigailhua.github.io/2019/11/05/Basic-Machine-Learning/)
-2. [MDP](https://abigailhua.github.io/2019/11/05/MDP/)
-3. [Search](https://abigailhua.github.io/2019/11/05/Search/)
-4. [Reinforcement Learning](https://abigailhua.github.io/2019/11/05/RL/)
+1. [Basic Machine Learning](https://abigailhua.github.io/2020/04/18/Basic-Machine-Learning/)
+2. [MDP](https://abigailhua.github.io/2020/04/18/MDP/)
+3. [Search](https://abigailhua.github.io/2020/04/18/Search/)
+4. [Reinforcement Learning](https://abigailhua.github.io/2020/04/18/RL/)
 
 # Machine Learning
 
