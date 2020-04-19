@@ -109,9 +109,9 @@ $$
 
 $$
 \begin{aligned}
-\frac{\part \mathcal{L}}{\part w} = w - \sum_i \alpha_i y_i \phi(x_i) = 0 \quad &\Rightarrow \quad w = \sum_i \alpha_i y_i \phi(x_i) \\
-\frac{\part \mathcal{L}}{\part b} = - \sum_i \alpha_i y_i = 0 \quad &\Rightarrow \quad \sum_i \alpha_i y_i = 0 \\
-\frac{\part \mathcal{L}}{\part \xi_i} = C - \alpha_i - \beta_i = 0 \quad &\Rightarrow \quad \alpha_i + \beta_i = C
+\frac{\partial \mathcal{L}}{\partial w} = w - \sum_i \alpha_i y_i \phi(x_i) = 0 \quad &\Rightarrow \quad w = \sum_i \alpha_i y_i \phi(x_i) \\
+\frac{\partial \mathcal{L}}{\partial b} = - \sum_i \alpha_i y_i = 0 \quad &\Rightarrow \quad \sum_i \alpha_i y_i = 0 \\
+\frac{\partial \mathcal{L}}{\partial \xi_i} = C - \alpha_i - \beta_i = 0 \quad &\Rightarrow \quad \alpha_i + \beta_i = C
 \end{aligned}
 $$
 
