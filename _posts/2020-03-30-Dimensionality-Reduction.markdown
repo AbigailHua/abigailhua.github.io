@@ -220,13 +220,13 @@ $$
 
 如图所示，自动编码器由编码器、bottleneck和解码器三部分组成。bottleneck就是我们所需要的低维特征（图示中是漏斗形的，可获得低维特征，也有少数自动编码器的bottleneck比原始数据维数更高，可以增加数据的维数）。训练完成后，我们不需要解码器，将数据输入编码器就可以输出低维特征。
 
-<img src="/img/in-post/post-dimensionality-reduction/auto-encoder.png"/>
+<img src="/img/in-post/post-dimensionality-reduction/auto-encoder.png" width="600">
 
 ### 变分编码器 VAE (Variational Auto-Encoder)
 
 下图展示了普通的自动编码器和VAE的区别
 
-<img src="/img/in-post/post-dimensionality-reduction/VAE.png"/>
+<img src="/img/in-post/post-dimensionality-reduction/VAE.png" width="600">
 
 VAE的编码器和解码器学到的并不是向量，而是概率分布。例如编码器网络中，学到的是期望为$\mu_z$，方差为$\sigma_z$的一个高斯分布，并从中采样出$z^i$，解码器网络同理。
 
@@ -272,7 +272,7 @@ $$
 
 下图可以直观地看到高斯分布和t分布的区别：
 
-<img src="\img\in-post\post-dimensionality-reduction\SNE.png" width="400">
+<img src="\img\in-post\post-dimensionality-reduction\SNE.png" width="600">
 
 高斯分布集中在平均值附近，边缘处的概率较小；t分布平均值处的概率略低，对边缘鲁棒性更高
 
@@ -280,7 +280,7 @@ $$
 
 LLE是通过每个样本最近的K个点重建距离
 
-<img src="\img\in-post\post-dimensionality-reduction\LLE.jpg" width="400">
+<img src="\img\in-post\post-dimensionality-reduction\LLE.jpg" width="600">
 
 LLE可以分为三个步骤：
 
@@ -358,6 +358,6 @@ $$
 
 下图是一个通过MDS展开瑞士卷的例子
 
-<img src="\img\in-post\post-dimensionality-reduction\ISOMap.jpg" width="400">
+<img src="\img\in-post\post-dimensionality-reduction\ISOMap.jpg" width="600">
 
 首先是构造K近邻图$G$；然后对于 $G$中的每对点，计算最近的距离（也就是几何距离）；最后对集合距离矩阵使用MDS
