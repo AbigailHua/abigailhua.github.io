@@ -46,7 +46,7 @@ $$
 
 实际上，特征选择也可以视作特征投影的一种特殊情况，所以也可以说分成特征投影和学习两大类。
 
-### 特征选择 Feature Selection
+## 3. 特征选择 Feature Selection
 
 特征选择有三大类方法：
 
@@ -54,7 +54,7 @@ $$
 2. 包裹式 Wrapper Methods
 3. 嵌入式 Embedded Methods
 
-#### 过滤式
+### 过滤式
 
 过滤式给每个特征打分，按分数高低排名，可以按threshold筛选，也可以选取前k个。
 
@@ -86,13 +86,13 @@ $$
 
 除了以上介绍的卡方检测和信息增益，在作业中我们实际使用了另一种方法，就是计算每个特征的方差来进行筛选。这种方法基于这样的思想：如果大多数样本在某一特征f上都取同一个值，这个特征就比较鸡肋，不要也罢。所以可以计算每个特征f的方差，低于某个阈值就去除。一般将阈值设为$0.8*(1-0.8)$。
 
-#### 包裹式
+### 包裹式
 
 包裹式将特征选择的过程视为一个搜索问题。评价函数能够给每种特征组合进行打分，目标是找到打分高的特征子集。
 
 课程中提到的前向和后向搜索都属于包裹式的方法。当然，前向和后向搜索本身都不是一种方法，而是一类方法，可以用不同的判定标准来决定是否保留或去除特征。
 
-#### 嵌入式
+### 嵌入式
 
 嵌入式在创建模型的同时选择对模型分类准确率最有帮助的那些特征，常见类型是正则化方法，例如LASSO、Elastic Net和岭回归 Ridge Regression。
 
@@ -120,7 +120,7 @@ $$
 
 那如何使用LASSO和岭回归进行特征选择呢？很简单，$\beta^*$里的元素越大，对应的特征权重越大，依此选择特征即可。
 
-### 特征投影 Feature Projection
+## 4. 特征投影 Feature Projection
 
 分为线性投影和非线性投影。
 
@@ -128,7 +128,7 @@ $$
 
 * 非线性投影可以表示为$f'=p(f)$，着重介绍Kernel PCA和自动编码器 Auto-encoder
 
-#### PCA
+### PCA
 
 PCA的思想是将高维映射到相互正交的k维上。
 
@@ -167,7 +167,7 @@ $$
 
 降维取多少维，是按照特征值从大到小取前多少个特征向量。例如要降到N维，就取最大的N个特征值对应的特征向量。
 
-#### Kernel PCA
+### Kernel PCA
 
 将上面推导的式子中$X$换成$\phi(X)$，$v$换成$\phi(X)\alpha$：
 
@@ -181,7 +181,7 @@ $$
 \end{aligned}
 $$
 
-#### LDA
+### LDA
 
 LDA的思想是找一个方向，使得在这个方向上类间的间距最大，同时类内的间距又较小，从而能够方便的区分不同类别。
 
@@ -214,7 +214,7 @@ $$
 
 因此，$v$是矩阵$S_W^{-1}S_B$的特征向量。
 
-#### 自动编码器 Auto-Encoder
+### 自动编码器 Auto-Encoder
 
 自动编码器是一种无监督学习，通过让重构数据逼近原始数据，不需要手工标注的数据就可以完成训练。
 
@@ -222,7 +222,7 @@ $$
 
 <img src="/img/in-post/post-dimensionality-reduction/auto-encoder.png"/>
 
-#### 变分编码器 VAE(Variational Auto-Encoder)
+### 变分编码器 VAE (Variational Auto-Encoder)
 
 下图展示了普通的自动编码器和VAE的区别
 
@@ -238,5 +238,130 @@ $$
 
 其中KL散度是控制$z$的误差，log是重构x的误差。
 
-### 特征学习 Feature Learning
+## 5. 特征学习 Feature Learning
 
+要特别注意特征学习和之前提到的特征投影的区别，特征学习是直接学习降维后的特征，特征投影则是学习投影矩阵或者投影的函数
+
+### SNE (Stochastic Neighborhood Embedding)
+
+思想：从$x$中学习到$\tilde{x}$，使得$\tilde{x}$能够保持$x$的相对距离（这里距离用高斯分布表示）
+
+$$
+p(j \mid i) = \frac{exp(- \parallel x_i - x_j \parallel^2)}{\sum_{k\neq i}exp(- \parallel x_i - x_k \parallel^2)}
+$$
+
+$$
+q(j \mid i) = \frac{exp(- \parallel \tilde{x}_i - \tilde{x}_j \parallel^2)}{\sum_{k\neq i}exp(- \parallel \tilde{x}_i - \tilde{x}_k \parallel^2)}
+$$
+
+$p(j \mid i)$和$q(j \mid i)$应尽量接近，所以目标是最小化KL散度：
+
+$$
+L = \sum_i KL(P_i \parallel Q_i) = \sum_i \sum_j p(j \mid i) \log \frac{p(j \mid i)}{q(j \mid i)}
+$$
+
+t-SNE是SNE的变形，区别在于使用的距离度量方式不是高斯而是（自由度为1的）t分布
+
+$$
+p(j \mid i) = \frac{(1+\parallel x_i - x_j \parallel ^2)^{-1}}{\sum_{k\neq i}(1+\parallel x_i - x_k \parallel ^2)^{-1}}
+$$
+
+$$
+q(j \mid i) = \frac{(1+\parallel \tilde{x}_i - \tilde{x}_j \parallel ^2)^{-1}}{\sum_{k\neq i}(1+\parallel \tilde{x}_i - \tilde{x}_k \parallel ^2)^{-1}}
+$$
+
+下图可以直观地看到高斯分布和t分布的区别：
+
+<img src="\img\in-post\post-dimensionality-reduction\SNE.png" width="200">
+
+高斯分布集中在平均值附近，边缘处的概率较小；t分布平均值处的概率略低，对边缘鲁棒性更高
+
+### LLE (Local Linear Embedding)
+
+LLE是通过每个样本最近的K个点重建距离
+
+<img src="\img\in-post\post-dimensionality-reduction\LLE.jpg" width="200">
+
+LLE可以分为三个步骤：
+
+1. 找到每个样本$x_i$的K邻近点（不包含它自身）
+
+2. 解出重建权重矩阵$W$，具体步骤是：
+
+   对于每个样本$x_i$：
+
+   1. 创建矩阵$Z$，每一列是$x_i$的一个邻近点，总共K列
+   2. 从$Z$的每一列中减去$x_i$
+   3. 计算局部协方差矩阵$C=Z^TZ$
+   4. 从线性方程$C\cdot w=1$中解出行向量$w$（方程右边的$1$是一个全1列向量）
+   5. 如果$j$不是$i$的邻居，将$W_{ij}$设为0
+   6. $W$的第$i$行的其他元素：$\frac{w}{sum(w)}$
+
+3. 用权重矩阵$W$计算嵌入坐标（embedding coordinates）$Y$
+
+   1. 创建稀疏矩阵$M=(I-W)^T \cdot (I-W)$
+   2. 找到$M$的最后$d+1$个特征向量（这里指的是最小的$d+1$个特征值对应的特征向量）
+   3. 将$Y$的第$q$行**（注意是行不是列）**设为最小的第$q+1$个特征向量（因为最小的那个特征向量是全1向量，对应特征值0）
+
+### MDS (Multi Dimensional Scaling)
+
+记样本$x_i = [x_{i1}; x_{i2}; ... ; x_{ik}]$
+
+记$B = X^TX$，即
+
+$$
+\begin{aligned}
+d_{ij}^2 &= \parallel x_i - x_j \parallel^2 \\
+&= x_i^Tx_i + x_j^Tx_j - 2x_i^Tx_j \\
+&= b_{ii} + b_{ij} - 2b_{ij}
+\end{aligned}
+$$
+
+若所有样本都去中心化了（这里是说每个样本的所有维，不是所有样本），则矩阵$B$的每一行和都是0：
+
+$$
+\begin{aligned}
+&\quad \sum_{i=1}^n x_{ik} = 0 \\
+&\Rightarrow \sum_{i=1}^n b_{ij} = \sum_{i=1}^n \sum_{k=1}^d x_{ik} x_{jk} = \sum_{k=1}^d x_{jk} \sum_{i=1}^n x_{ik} = 0
+\end{aligned}
+$$
+
+由以上两个式子可以推出：
+
+$$
+\sum_{i=1}^n d_{ij}^2 = \sum_{i=1}^n b_{ii} + nb_{jj}
+$$
+
+$$
+\sum_{j=1}^n d_{ij}^2 = \sum_{i=1}^n b_{ii} + nb_{ii}
+$$
+
+$$
+\sum_{i=1}^n \sum_{j=1}^n d_{ij}^2 = 2n\sum_{i=1}^n b_{ii}
+$$
+
+进而
+
+$$
+b_{ij} = -\frac{1}{2} (d_{ij}^2 - \frac{1}{n}\sum_{i=1}^n d_{ij}^2 - \frac{1}{n} \sum_{j=1}^n d_{ij}^2 + \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n d_{ij}^2)
+$$
+
+可以写成矩阵形式
+
+$$
+B=-\frac{1}{2} H \overline{D} H
+$$
+
+其中$\overline{D}_{ij} = d_{ij}^2$，且$H=I-\frac{1}{n}11^T$（$H$没有实际的物理意义，只是为了凑形式）
+
+所以，给定距离矩阵$\overline{D}$，我们就可以计算出$B$（通过$B=-\frac{1}{2} H \overline{D} H$），然后根据$B = X^TX$就可以计算出$X$
+
+下图是一个通过MDS展开瑞士卷的例子
+
+<img src="\img\in-post\post-dimensionality-reduction\ISOMap.jpg" width="200">
+
+首先是构造K近邻图$G$
+
+对于 $G$中的每对点，计算最近的距离（也就是几何距离）
+
+再对集合距离矩阵使用MDS
