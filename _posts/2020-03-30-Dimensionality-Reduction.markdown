@@ -272,7 +272,7 @@ $$
 
 下图可以直观地看到高斯分布和t分布的区别：
 
-<img src="\img\in-post\post-dimensionality-reduction\SNE.png" width="200">
+<img src="\img\in-post\post-dimensionality-reduction\SNE.png" width="400">
 
 高斯分布集中在平均值附近，边缘处的概率较小；t分布平均值处的概率略低，对边缘鲁棒性更高
 
@@ -280,7 +280,7 @@ $$
 
 LLE是通过每个样本最近的K个点重建距离
 
-<img src="\img\in-post\post-dimensionality-reduction\LLE.jpg" width="200">
+<img src="\img\in-post\post-dimensionality-reduction\LLE.jpg" width="400">
 
 LLE可以分为三个步骤：
 
@@ -297,7 +297,7 @@ LLE可以分为三个步骤：
    5. 如果$j$不是$i$的邻居，将$W_{ij}$设为0
    6. $W$的第$i$行的其他元素：$\frac{w}{sum(w)}$
 
-3. 用权重矩阵$W$计算嵌入坐标（embedding coordinates）$Y$
+3. 用权重矩阵$W$计算嵌入坐标$Y$(不知道怎么翻译比较好，原文是embedding coordinates)
 
    1. 创建稀疏矩阵$M=(I-W)^T \cdot (I-W)$
    2. 找到$M$的最后$d+1$个特征向量（这里指的是最小的$d+1$个特征值对应的特征向量）
@@ -352,16 +352,12 @@ $$
 B=-\frac{1}{2} H \overline{D} H
 $$
 
-其中$\overline{D}_{ij} = d_{ij}^2$，且$H=I-\frac{1}{n}11^T$（$H$没有实际的物理意义，只是为了凑形式）
+其中$\overline{D}\_{ij} = d\_{ij}^2$，且$H=I-\frac{1}{n}11^T$（$H$没有实际的物理意义，只是为了凑形式）
 
 所以，给定距离矩阵$\overline{D}$，我们就可以计算出$B$（通过$B=-\frac{1}{2} H \overline{D} H$），然后根据$B = X^TX$就可以计算出$X$
 
 下图是一个通过MDS展开瑞士卷的例子
 
-<img src="\img\in-post\post-dimensionality-reduction\ISOMap.jpg" width="200">
+<img src="\img\in-post\post-dimensionality-reduction\ISOMap.jpg" width="400">
 
-首先是构造K近邻图$G$
-
-对于 $G$中的每对点，计算最近的距离（也就是几何距离）
-
-再对集合距离矩阵使用MDS
+首先是构造K近邻图$G$；然后对于 $G$中的每对点，计算最近的距离（也就是几何距离）；最后对集合距离矩阵使用MDS
