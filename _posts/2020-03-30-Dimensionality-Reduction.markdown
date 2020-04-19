@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Dimensionality Reduction"
-subtitle:   "Supplementation"
+subtitle:   "数据科学基础课笔记（一）"
 date:       2020-03-31 21:30:00
 author:     "AH"
 header-img: "img/post-bg-2015.jpg"
