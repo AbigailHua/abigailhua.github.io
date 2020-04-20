@@ -13,11 +13,11 @@ tags:
 
 上一章笔记介绍了在训练样本数量固定时，高维很可能导致过拟合。然而维数过低也会有欠拟合的问题。
 
-<img src="\img\in-post\post-kernel-trick\performance.png" width="600">
+<img src="\img\in-post\post-kernel-trick\performance.png" width="550">
 
 例如在下图中，无法找到一个线性分类器将正负样本较好地分开。
 
-<img src="\img\in-post\post-kernel-trick\classify.jpg" width="600">
+<img src="\img\in-post\post-kernel-trick\classify.jpg" width="350">
 
 但是如果我们能将样本投影到高维空间，数据也许就变得可分了
 
