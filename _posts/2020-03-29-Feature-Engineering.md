@@ -46,21 +46,21 @@ $L_p$归一化：$\tilde{x} = \frac{x}{(\sum_i \mid x_i \mid^p)^{\frac{1}{p}}}$
 
 现有二维特征$\tilde{x} = [\tilde{x}\_1, \tilde{x}\_2]$，且$(\mid \tilde{x}\_1 \mid^p+\mid \tilde{x}\_2 \mid^p)^{\frac{1}{p}}=1$，下图展示了$\tilde{x}\_1$和$\tilde{x}\_2$的关系：
 
-<img src="/img/in-posts/post-feature-engineering/Lp.jpg" width="500">
+<img src="/img/in-post/post-feature-engineering/Lp.jpg" width="500">
 
 ## Z-Score归一化
 
 对于二维特征$x=[x\_1,x\_2]$，令$\tilde{x} = [\tilde{x}\_1, \tilde{x}\_2]$，其中$\tilde{x}\_1=\frac{x_1-\mu_1}{\sigma_1}$，$\tilde{x}\_2=\frac{x_2-\mu_2}{\sigma_2}$
 
-<img src="/img/in-posts/post-feature-engineering/z-score1.png" width="500">
+<img src="/img/in-post/post-feature-engineering/z-score1.png" width="500">
 
-<img src="/img/in-posts/post-feature-engineering/z-score2.png" width="500">
+<img src="/img/in-post/post-feature-engineering/z-score2.png" width="500">
 
 ## 空间金字塔 (Spatial Pyramid)
 
 将同一张图片依次分成16块、4块、1块，然后再把这些块连起来，得到的新特征能够保留图片的空间信息
 
-<img src="/img/in-posts/post-feature-engineering/sp.png" width="500">
+<img src="/img/in-post/post-feature-engineering/sp.jpg" width="500">
 
 （虽然这样会大大增加特征的维数，降维方法将在[下一章](https://abigailhua.github.io/2020/03/31/Dimensionality-Reduction/)介绍）
 
