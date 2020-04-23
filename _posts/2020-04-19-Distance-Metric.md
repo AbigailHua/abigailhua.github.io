@@ -38,15 +38,23 @@ $L_p$范数本质上就是向量和零向量之间的闵可夫斯基距离，再
 
 ### 余弦距离 (Cosine Distance)
 
+距离和相似是相关的概念，距离越大，相似度越低；距离越小，相似度越高。
+
+可以定义余弦相似度
+
 $$
 Sim_{cos}(x, y) = \frac{x^Ty}{\parallel x \parallel \parallel y \parallel}
 $$
 
-与欧氏距离关系：
+它与欧氏距离关系：
 
 当$\parallel x \parallel = \parallel y \parallel =1$时，$d_{euc}(x, y) = \sqrt{2-2x^Ty} = \sqrt{2-2sim_{cos}(x, y)}$
 
+由于上面余弦相似度的式子取值范围在$[-1, 1]$，通常也会将它归一化到$[0, 1]$的区间内，也就是
 
+$$
+\frac{1}{2}[Sim_{cos}(x, y)+1]
+$$
 
 #### 如果不同维度的度量方式不同呢？
 
