@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Kernel Trick"
-subtitle:   "数据科学基础课笔记（二）"
+subtitle:   "数据科学基础课笔记（四）"
 date:       2020-04-19 15:30:00
 author:     "AH"
 header-img: "img/post-bg-2015.jpg"

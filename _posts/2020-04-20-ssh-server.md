@@ -71,4 +71,14 @@ tags:
 
    后来在`plt.savefig('xxx.png')`的时候碰到了类似的问题，同样改成绝对路径就可以了。
 
-2. 如果还有，再补充吧
+2. 再提个和服务器无关的事儿吧，是tex的问题。
+
+   拿队友传来的文件一编译，图片的`ref`找不到指代的图片了。
+
+   平时我个人习惯是`caption`写在`label`前面的，但不知道顺序有讲究，所以一开始并没有想到是这方面问题，还想着是不是像函数声明一样`ref`得放得比`label`前面呀？后来一想不对，我的表格就没这个问题啊。之后才查到是`caption`和`label`的顺序很重要！
+
+   敲黑板：`caption`可以后面加`label`，也可以把`label`写在`caption`里面，但就是不能把`label`写在`caption`前面！
+
+   具体原理看[这里](https://tex.stackexchange.com/questions/431676/problem-with-label-and-references-and-subfig-subcaption)
+
+3. 如果还有，再补充吧
