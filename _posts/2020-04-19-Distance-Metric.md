@@ -185,21 +185,21 @@ KL散度的缺陷是，它不是一个对称的函数，所以后续有许多对
 
 1. Jefferys Divergence把$p,q$的KL散度和$q, p$的KL散度加起来
 
-$$
-\begin{aligned}
-D_{JD} &= D_{KL}(p\parallel q) + D_{KL}(q\parallel p) \\
-&= \sum_i p(x_i) \log \frac{p(x_i)}{q(x_i)} + \sum_i q(x_i) \log \frac{q(x_i)}{p(x_i)}
-\end{aligned}
-$$
+    $$
+    \begin{aligned}
+    D_{JD} &= D_{KL}(p\parallel q) + D_{KL}(q\parallel p) \\
+    &= \sum_i p(x_i) \log \frac{p(x_i)}{q(x_i)} + \sum_i q(x_i) \log \frac{q(x_i)}{p(x_i)}
+    \end{aligned}
+    $$
 
 2. Jensen-Shannon (JS) Divergence计算了$p, \frac{1}{2}(p+q)$和$q, \frac{1}{2}(p+q)$的KL散度
 
-$$
-\begin{aligned}
-D_{JD} &= \frac{1}{2} D_{KL} (p\parallel \frac{1}{2}(p+q)) + \frac{1}{2} D_{KL} (q\parallel \frac{1}{2}(p+q)) \\
-&= \sum_i \frac{1}{2} p(x_i) \log\frac{p(x_i)}{\frac{1}{2}(p(x_i)+q(x_i))} + \sum_i \frac{1}{2} q(x_i) \log\frac{q(x_i)}{\frac{1}{2}(p(x_i)+q(x_i))} \\
-\end{aligned}
-$$
+    $$
+    \begin{aligned}
+    D_{JD} &= \frac{1}{2} D_{KL} (p\parallel \frac{1}{2}(p+q)) + \frac{1}{2} D_{KL} (q\parallel \frac{1}{2}(p+q)) \\
+    &= \sum_i \frac{1}{2} p(x_i) \log\frac{p(x_i)}{\frac{1}{2}(p(x_i)+q(x_i))} + \sum_i \frac{1}{2} q(x_i) \log\frac{q(x_i)}{\frac{1}{2}(p(x_i)+q(x_i))} \\
+    \end{aligned}
+    $$
 
 ### Bregman Divergence
 
