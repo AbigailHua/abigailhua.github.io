@@ -2,11 +2,14 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Test</title>
+<title>PReader</title>
 </head>
 
 <body>
-    <input type="file" name="..." size="15" input enctype="multipart/form-data" maxlength="100">
+    <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
+    	<input type="file" id="upload" name="upload" /> <br/>
+    	<input type="submit" value="Upload" />
+	</form>
 </body>
 
 </html>
