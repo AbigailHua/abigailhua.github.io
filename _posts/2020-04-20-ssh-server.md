@@ -35,7 +35,25 @@ tags:
 
 ## 文件上传下载
 
-百度告诉我应该用scp（前几周百度面试官也让我了解一下scp，真的不是冥冥之中有天意吗），可是我就是传不上去，气死了。再次感谢Pycharm的远程文件夹管理，上传文件so easy（真的不是广告）
+搜了百度告诉我应该用scp（前几周百度面试官也让我了解一下scp，好巧哦）。一开始在cmd里死活传不上去，后来再探索了一阵子，应该这么操作：
+
+不登录服务器，在cmd输入
+
+```shell
+>> scp -P [port] upload_file_name account@ip:/path
+```
+
+要注意的是，`-P`是大写的P，且一定要直接跟在scp后面。如果没有cd到upload_file_name所在的文件夹，就要使用绝对路径。path里不需要包含文件名，只要目录即可。另外，我是没有sudo权限的，所以目的文件夹有限制。
+
+下载文件同样在Windows的cmd中进行，输入
+
+```
+>> scp -P [port] account@ip:download_file_path "D:/XXX/XXX/XX"
+```
+
+（看了一圈，因为linux没有sudo权限不能乱装东西，只有这个方法有用呜呜呜）
+
+在做平时作业的时候，一个一个文件上传属实麻烦，再次感谢Pycharm的远程文件夹管理，上传/下载文件so easy（真的不是广告）
 
 但是改完远程代码一定要上传！一定要上传！一定要上传！平时本地代码Pycharm是实时保存的，真是被惯坏了。
 
@@ -60,6 +78,32 @@ tags:
 | conda info --envs                     | 展示conda下所有的环境                                        |
 | conda create --name snakes python=3.5 | 新建一个名为snakes的环境，Python版本是3.5                    |
 | conda activate snakes                 | 激活snakes环境（默认是base）                                 |
+
+## 后台运行
+
+因为之前是在Pycharm里运行远程代码，在远程运行期间就不能断网也不能关电脑。之前觉得没什么，把电脑晾一晚上就好了。但是这次作业耗时太久，一天一夜也没跑完，加上这几天半夜家里正好停电，赶ddl的进度就有点捉襟见肘了。幸好，队友提示我可以去搜搜`nohup`。
+
+缺点是一定要cmd中运行，先上命令格式吧：
+
+```bash
+>> nohup python3 example.py>exampleout.log 2>&1 &
+```
+
+大致就是，nohup是不间断运行（no hang up的缩写），结尾的`&`是后台运行的意思，中间就是想要后台不间断运行的命令。
+
+再详细解释一下中间的命令，0表示stdin (standard input)，1表示stdout (standard output)，2表示 stderr (standard error) 。2>&1是将标准错误（2）重定向到标准输出（&1），标准输出（&1）再被重定向输入到`exampleout.log`文件中。
+
+提交nohup命令后，屏幕上会有一个进程编号。
+
+既然后台运行，`ctrl+c`就不能中止这个进程，所以需要使用
+
+```bash
+>> kill [PID]
+```
+
+来杀死进程。这里的PID就是上面显示的进程编号。
+
+那如果前一天关了电脑，忘了保存这个进程编号怎么办呢？我们可以用`ps`命令查看进程（参数`-ux`可只查看当前用户的进程），找到对应的PID就可以了。
 
 ## 其他奇奇怪怪的问题
 
