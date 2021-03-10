@@ -19,13 +19,13 @@ tags:
 
 为了让新的tensor尺寸和原来的一样，可以用padding的方法增加边缘。
 
-<img src="/img/in-post/post-data-preprocessing/median-filter.png" src="400">
+<img src="/img/in-post/post-data-preprocessing/median-filter.png" width="400">
 
 ### 均值滤波 (Mean Filter)
 
 均值滤波和中值滤波很相似，只是均值滤波用的是平均值，中值滤波是中位数。
 
-<img src="/img/in-post/post-data-preprocessing/mean-filter.png" src="400">
+<img src="/img/in-post/post-data-preprocessing/mean-filter.png" width="400">
 
 ### 中值滤波和均值滤波的比较
 
@@ -72,17 +72,17 @@ tags:
 
 将连续的值映射到两个值（就是2个bin）（比如将一张原始黑白照片变换为只有黑白二色的照片）
 
-<img src="/img/in-post/post-data-preprocessing/binarization.png" src="400">
+<img src="/img/in-post/post-data-preprocessing/binarization.png" width="400">
 
 ### 量子化 (Quantization)
 
 将连续的值映射到多个（超过2个）bin（比如将正弦函数近似为锯齿状）
 
-<img src="/img/in-post/post-data-preprocessing/sine.png" src="400">
+<img src="/img/in-post/post-data-preprocessing/sine.png" width="400">
 
 Tradeoff: bin的数量越少，存储空间越小，但丢掉的信息越多
 
-<img src="/img/in-post/post-data-preprocessing/quantization.png" src="400">
+<img src="/img/in-post/post-data-preprocessing/quantization.png" width="400">
 
 ### 基于聚类的量子化
 
