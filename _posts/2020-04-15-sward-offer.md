@@ -7,6 +7,7 @@ author:     "AH"
 header-img: "img/post-bg-2015.jpg"
 tags:
     - 刷题
+
 ---
 
 # 剑指Offer
@@ -52,7 +53,9 @@ public:
 
 ### 思路
 
-第一遍正向遍历数空格；第二遍逆向遍历挪数据
+第一遍正向遍历数空格；
+
+第二遍逆向遍历挪数据
 
 ### 代码
 
@@ -213,8 +216,9 @@ private:
 
 ### 题目描述
 
-把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。
-
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
+输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。
+例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。
 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
 
 ### 思路
@@ -519,6 +523,8 @@ public:
 
 
 
+
+
 ## 15. 反转链表
 
 ### 题目描述
@@ -637,27 +643,17 @@ public:
 
 
 > 二叉树的镜像定义：源二叉树 
-> 
 > 	     8
-> 	     
 > 	    /  \
-> 	    
 > 	  6   10
-> 	  
->  	 / \  / \
->  	 
->  	5  7 9 11
+> 	 / \  / \
+> 	5  7 9 11
 >
 > 镜像二叉树
-> 
 > 	     8
-> 	     
 > 	    /  \
-> 	    
 > 	  10   6
-> 	  
->  	 / \  / \
->  	 
+> 	 / \  / \
 > 	11 9 7  5
 
 ### 思路
@@ -867,39 +863,471 @@ public:
 
 ### 题目描述
 
-输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则返回true,否则返回false。假设输入的数组的任意两个数字都互不相同。
 
 ### 思路
 
-递归：后序遍历，末尾总是根结点；以第一个比根大的数为界划分左右子树，看右子树是否有比根小的节点；递归左右子树。
+后序遍历，先找到根节点（最后那个元素），然后从第一个元素开始遍历，找到第一个比根节点大的元素，则左边是左子树，右边是右子树。再继续遍历下去，如果右子树中有比root小的元素，返回false。
+
+递归检查左子树和右子树是不是二叉搜索树。
 
 ### 代码
 
-```C++
+```c++
 class Solution {
 public:
-    bool verify(vector<int> arr, int start, int end){
-        if(start==end) return 1;
-        int root = arr[end];
-        int pos=start;
-        for(; pos<end; pos++)
-            if(arr[pos]>root) break;
-        int np = pos;
-        for(; np<end; np++){
-            if(arr[np]<root) return 0;
-        }
-        if(pos==start or pos==end) return 1;
-        return verify(arr, start, pos-1) and verify(arr, pos, end);
-    }
-    
+    int flag = 0;
     bool VerifySquenceOfBST(vector<int> sequence) {
-        int size = sequence.size();
-        if(size==0) return 0;
-        return verify(sequence, 0, size-1);
+        vector<int> left, right;
+        int len = sequence.size();
+        if (len == 0){
+            if (flag == 0) return false;
+            else return true;
+        }
+        flag = 1;
+        int root = sequence[len-1];
+        int i;
+        for(i=0; i<len-1; i++) {
+            if (sequence[i] < root) {
+                left.push_back(sequence[i]);
+            }
+            else break;
+        }
+        for(; i<len-1; i++) {
+            if (sequence[i] > root) {
+                right.push_back(sequence[i]);
+            }
+            else
+                return false;
+        }
+         
+        return VerifySquenceOfBST(left)
+            && VerifySquenceOfBST(right);
     }
 };
 ```
 
 
 
-### *To Be Continued...*
+## 24. 二叉树中和为某一值的路径
+
+### 题目描述
+
+输入一颗二叉树的根节点和一个整数，按字典序打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+
+### 思路
+
+1. 假设root比期望值要大，不存在这样的路径
+2. 计算diff=期望值-root，递归检查左子树和右子树的路径有没有和为diff的
+
+### 代码
+
+```c++
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+class Solution {
+public:
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+        vector<vector<int> > res, restmp;
+        if (!root) return res;
+        if (root->val > expectNumber) return res;
+        if (root->val == expectNumber) {
+            if (root->left==NULL && root->right==NULL) {
+                res.push_back({expectNumber});
+            }
+            return res;
+        }
+         
+        int diff = expectNumber - root->val;
+        if (root->left) {
+            restmp = FindPath(root->left, diff);
+            if (!restmp.empty()) {
+                vector<int> tmp;
+                for (int i=0; i<restmp.size(); i++) {
+                    tmp = restmp[i];
+                    tmp.insert(tmp.begin(), root->val);
+                    res.push_back(tmp);
+                }
+            }
+        }
+        if (root->right) {
+            restmp = FindPath(root->right, diff);
+            if (!restmp.empty()) {
+                vector<int> tmp;
+                for (int i=0; i<restmp.size(); i++) {
+                    tmp = restmp[i];
+                    tmp.insert(tmp.begin(), root->val);
+                    res.push_back(tmp);
+                }
+            }
+        }
+        return res;
+    }
+};
+```
+
+
+
+## 25. 复杂链表的复制
+
+### 题目描述
+
+输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针random指向一个随机节点），请对此链表进行深拷贝，并返回拷贝后的头结点。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+
+### 思路
+
+分三步走：
+
+1. 假设原来的链表是A-B-C-...，复制所有节点（先不复制random指针），得到A'-B'-C'-...
+2. 复制random指针
+3. 把这个大链表拆分开来
+
+### 代码
+
+```c++
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+        if (!pHead) return NULL;
+        // copy nodes
+        RandomListNode *cur = pHead, *sibling;
+        while(cur){
+            sibling = new RandomListNode(cur->label);
+            sibling->next = cur->next;
+            cur->next = sibling;
+            cur = sibling->next;
+        }
+        // copy random pointers
+        cur = pHead;
+        sibling = cur->next;
+        while(cur){
+            if (cur->random){
+                sibling->random = cur->random->next;
+            }
+            cur = sibling->next;
+            sibling = cur->next;
+        }
+        // split the list
+        RandomListNode *res = new RandomListNode(0);
+        cur = pHead;
+        sibling = res;
+        while(cur){
+            sibling->next = cur->next;
+            cur->next = cur->next->next;
+ 
+            sibling = sibling->next;
+            cur = cur->next;
+        }
+        return res->next;
+    }
+};
+```
+
+
+
+## 26. 二叉搜索树与双向链表
+
+### 题目描述
+
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+### 思路
+
+要求链表按序，二叉搜索树的中序遍历可以满足要求
+
+双向链表要注意添加另一方向的指针
+
+### 代码
+
+```c++
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    TreeNode *pre=NULL, *head;
+    
+    TreeNode* Convert(TreeNode* root) {
+        if(root==NULL) return NULL;
+        dfs(root);
+//         head->left=pre;
+//         pre->right=head;
+        return head;
+    }
+
+    void dfs(TreeNode* cur){
+        if(cur==NULL) return;
+        // left subtree
+        if(cur->left) dfs(cur->left);
+        // add pointer
+        if(pre!=NULL)
+            pre->right=cur;
+        else
+            head=cur;
+        cur->left=pre;
+        pre=cur;
+        // right subtree
+        if(cur->right) dfs(cur->right);
+    }
+};
+```
+
+
+
+## 29. 最小的K个数
+
+### 题目描述
+
+输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4。
+
+### 思路
+
+用大小为k的小顶堆（具体实现是降序的优先级队列，但要注意最后的输出顺序）
+
+### 代码
+
+```c++
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        vector<int> res;
+        priority_queue<int, vector<int>, less<int>> heap;
+        int len = input.size();
+        if (len < k) return res;
+
+        for (int i=0; i<k; i++)
+            heap.push(input[i]);
+        for (int i=k; i<len; i++) {
+            heap.push(input[i]);
+            heap.pop();
+        }
+
+        while(!heap.empty()) {
+            res.insert(res.begin(), heap.top());
+            heap.pop();
+        }
+        return res;
+    }
+};
+```
+
+
+
+## 40. 和为S的两个数字
+
+### 题目描述
+
+一个整型数组里除了两个数字之外，其他的数字都出现了两次。请写程序找出这两个只出现一次的数字。
+
+### 思路
+
+哈希
+
+### 代码
+
+```c++
+#include <unordered_map>
+class Solution {
+public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     *
+     * 
+     * @param array int整型vector 
+     * @return int整型vector
+     */
+    vector<int> FindNumsAppearOnce(vector<int>& array) {
+        int len = array.size();
+        unordered_map<int, int> hash;
+        vector<int> res;
+        for (int i=0; i<len; i++) {
+            hash[array[i]]++;
+        }
+        for(int i=0; i<len; i++) {
+            if(hash[array[i]] == 1)
+                res.push_back(array[i]);
+        }
+        return res;
+    }
+};
+```
+
+
+
+## 42. 和为S的两个数字
+
+### 题目描述
+
+输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。
+
+### 返回值描述:
+
+>对应每个测试案例，输出两个数，小的先输出。
+
+
+### 思路
+
+这道题和LeetCode第一题几乎一样，只是输出需要筛选一下。
+
+沿用LeetCode的思路，用哈希
+
+### 代码
+
+```c++
+class Solution{
+public:
+    vector<int> FindNumbersWithSum(vector<int> array,int sum) {
+        vector<int> res;
+        unordered_map<int, int> hash;
+        int len = array.size();
+        if (len <= 1) return res;
+        int min_prod = array[len-1] * array[len-2];
+        for (int i=0; i<len; i++) {
+            if (hash.count(array[i]) != 0) {
+                if(res.size() == 0 || array[i] * (sum-array[i]) < min_prod)
+                    res = {sum-array[i], array[i]};
+            }
+            hash[sum-array[i]] = i;
+        }
+        return res;
+    }
+}
+
+```
+
+
+
+## 47. 求1+2+3+...+n
+
+### 题目描述
+
+求1+2+3+...+n，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+### 思路
+
+利用逻辑运算的短路操作实现判断
+
+再利用递归实现条件控制
+
+### 代码
+
+```c++
+class Solution {
+public:
+    int Sum_Solution(int n) {
+        int sum = n;
+        bool ans = (n>0) && ((sum += Sum_Solution(n-1))>0);
+        return sum;
+    }
+};
+```
+
+
+
+## 51. 构建乘积数组
+
+### 题目描述
+
+给定一个数组A[0,1,...,n-1],请构建一个数组B[0,1,...,n-1],其中B中的元素B[i]=A[0]*A[1]*...*A[i-1]*A[i+1]*...*A[n-1]。不能使用除法。（注意：规定B[0] = A[1] * A[2] * ... * A[n-1]，B[n-1] = A[0] * A[1] * ... * A[n-2];）
+
+对于A长度为1的情况，B无意义，故而无法构建，因此该情况不会存在。
+
+### 思路
+
+分别计算上三角和下三角的值。简单来说就是用动态规划记录左边和右边的值。
+
+### 代码
+
+```c++
+class Solution {
+public:
+    vector<int> multiply(const vector<int>& A) {
+        vector<int> B;
+        int len = A.size(), tmp = 1;
+        if(len<=1) return B;
+        B.push_back(1);
+        for(int i=1; i<len; i++)
+            B.push_back(B[i-1]*A[i-1]);
+            
+        for(int i=len-2; i>=0; i--){
+            tmp *= A[i+1];
+            B[i] *= tmp;
+        }
+        return B;
+    }
+};
+```
+
+
+
+## 67. 剪绳子
+
+### 题目描述
+
+给你一根长度为n的绳子，请把绳子剪成整数长的m段（m、n都是整数，n>1并且m>1，m<=n），每段绳子的长度记为k[1],...,k[m]。请问k[1]x...xk[m]可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+### 输入描述:
+
+> 输入一个数n，意义见题面。（2<=n<=60）
+
+### 返回值描述:
+
+> 输出答案。
+
+
+### 思路
+
+可以用动态规划，但是最快的还是贪心算法。
+
+（以下摘自Leetcode的某个评论）
+
+根据数论，
+
+1. 所有正整数（除了1）都可以表示成若干个2和3的和
+2. 因为2\*2=1\*4，2\*3>1\*5，所以拆成2和3，能得到的积最大
+3. 因为2*2*2<3*3, 所以3越多积越大 时间复杂度O(n/3)，用幂函数可以达到O(log(n/3)), 因为n不大，所以提升意义不大，我就没用。 空间复杂度常数复杂度O(1)
+
+### 代码
+
+```c++
+class Solution {
+public:
+    int cutRope(int n) {
+        if (n <= 3) return n-1;
+        int div = n / 3;
+        int rem = n % 3;
+        int res = 1;
+        for (int i=0; i<div-1; i++)
+            res *= 3;
+         
+        if (rem == 2) res *= 6;
+        else res *= (3+rem);
+         
+        return res;
+    }
+};
+```
+
