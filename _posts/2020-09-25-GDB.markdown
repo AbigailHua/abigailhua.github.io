@@ -1,0 +1,224 @@
+---
+layout:     post
+title:      "GDB简单教程"
+subtitle:   ""
+date:       2020-09-25 15:00:00
+author:     "AH"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - 杂谈
+---
+
+翻译自https://www.geeksforgeeks.org/gdb-command-in-linux-with-examples/
+
+## 示例程序
+
+```C++
+#include <iostream> 
+#include <stdlib.h> 
+#include <string.h> 
+using namespace std; 
+
+int findSquare(int a) 
+{ 
+	return a * a; 
+} 
+
+int main(int n, char** args) 
+{ 
+	for (int i = 1; i < n; i++) 
+	{ 
+		int a = atoi(args[i]); 
+		cout << findSquare(a) << endl; 
+	} 
+	return 0; 
+} 
+
+```
+
+### 编译命令
+
+```shell
+$ g++ -g -o gfg gfg.cpp
+```
+
+1. 运行：`run [args]`
+
+   ```shell
+   $ gdb gfg
+   $ run 10 # 以10为参数运行
+   $ run 100 # 以100为参数运行
+   ```
+
+2. 退出：`quit`或`q`
+
+3. 帮助： `help`
+
+4. 增加断点：`break`
+
+   break可加参数：
+
+   ```shell
+   $ b
+   $ break [function name]
+   $ break [file name]:[line number]
+   $ break [line number]
+   $ break *[address]
+   $ break ***any of the above arguments*** if [condition]
+   $ b ***any of the above arguments***
+   ```
+
+   例子：
+
+   ```shell
+   $ gdb gfg
+   $ b findSquare # 在findSquare函数处增加断点
+   $ run 10 100 # 以10和100为参数运行
+   Starting program: .../gfg 10 100
+   
+   Breakpoint 1, findSquare (a=10) at gfg.cpp:7
+   7								return a*a;
+   ```
+
+5. 继续：`continue [repeat count]`或`c [repeat count]`
+
+6. 运行下一条指令：`next`或`n`
+
+7. 删除断点：`delete`或`d`
+
+   可选参数：
+
+   ```shell
+   $ d
+   $ delete
+   $ delete [breakpoint number 1] [breakpoint number 2] ...
+   $ delete checkpoint [checkpoint number 1] [checkpoint number 2] ...
+   ```
+
+   例子：
+
+   ```shell
+   $ b main # 在main函数打断点
+   Breakpoint 1 at 0x8f9: file gfg.cpp, line 11.
+   $ b findSquare # 在findSquare函数打断点
+   Breakpoint 2 at 0x8e1: file gfg.cpp, line 7.
+   $ d 2 # 删除第二个断点
+   $ run 10 # 以10为参数运行
+   Starting program: .../gfg 10
+   
+   Breakpoint1, main (n=2, args=0x7fffffffde48) at gfg.cpp:11
+   11						for(int i=1;i<n;i++){
+   $ c # 继续
+   Continuing.
+   100
+   [Inferior 1 (process 11836) exited normally]
+   ```
+
+8. 删除某个函数或者某一行的断点：`clear`
+
+   参数：
+
+   ```shell
+   $ clear [line number] 
+   $ clear [FUNCTION_NAME]
+   ```
+
+9. disable断点：`disable [breakpoint number 1] [breakpoint number 2] ...`
+
+10. enable断点：`enable [breakpoint number 1] [breakpoint number 2] ...`
+
+11. 查看断点信息：`info breakpoints [breakpoint number 1] [breakpoint number 2] ...`
+
+12. 创建一个新进程并挂起当前进程（`checkpoint`）和继续进程（`restart`）
+
+    例子：
+
+    ```shell
+    $ b findSquare
+    $ run 1 10 100
+    Starting program: .../gfg 1 10 100
+    
+    Breakpoint 1, findSquare (a=1) at gfg.cpp:7
+    7								return a*a
+    $ checkpoint # 创建第一个checkpoint
+    checkpoint 1: fork returned pid 4272.
+    $ continue
+    Continuing.
+    1
+    
+    Breakpoint 1, findSquare (a=10) at gfg.cpp:7
+    7								return a*a;
+    $ checkpoint # 创建第二个checkpoint
+    checkpoint 2: fork returned pid 4278.
+    $ info checkpoints
+    * 0 process 4268 (main process) at 0x5555555548e1, file gfg.cpp, line 7
+      1 process 4272 at 0x5555555548e1, file gfg.cpp, line 7
+      2 process 4278 at 0x5555555548e1, file gfg.cpp, line 7
+    $ restart 1
+    Switching to process 4272
+    #0 findSquare (a=1) at gfg.cpp:7
+    7								return a*a;
+    $ info checkpoints
+      0 process 4268 (main process) at 0x5555555548e1, file gfg.cpp, line 7
+    * 1 process 4272 at 0x5555555548e1, file gfg.cpp, line 7
+      2 process 4278 at 0x5555555548e1, file gfg.cpp, line 7
+    $ restart 0
+    Switching to process 4268
+    #0 findSquare (a=1) at gfg.cpp:7
+    7								return a*a;
+    $ c
+    Continuing.
+    100
+    ```
+
+    在以上执行过程中，断点在函数findSquare中，且程序以参数1 10 100执行。当函数以参数a=1被调用时，断点发生。
+
+    然后我们创建了一个checkpoint，于是gdb返回了一个进程id（4272），挂起进程，并且只要遇到`continue`命令，就会继续原来的线程。
+
+    现在断点发生在a=10处，并且我们创建了另一个checkpoint （pid=4278）。
+
+    在checkpoint信息中，星号表示gdb在遇到下一个continue的时候将会运行的进程。
+
+    `restart`命令可以用来继续某个特定的进程，其参数指定了进程的序列号。如果所有进程都结束执行，那么`info checkpoint`命令将返回空。
+
+13. 设置参数：`set args [arg1] [arg2] ... `
+
+    用在`run`之前，来指定运行程序的参数
+
+    如果`run`没有参数，就会用`set`指定的参数；如果`run`有参数，参数表会更新为`run`的参数
+
+14. 显示参数：`show args`
+
+15. 指定表达式默认的显示格式：`display [/format specifier] [expression]`
+
+    清除指定的格式：`undisplay [display id1] [display id2] ...`
+
+    format specifier可选参数：
+
+    ```
+    o - octal
+    x - hexadecimal
+    d - decimal
+    u - unsigned decimal
+    t - binary
+    f - floating point
+    a - address
+    c - char
+    s - string
+    i - instruction
+    ```
+
+16. 打印表达式的值：`print`
+
+    可选参数：
+
+    ```shell
+    $ print [Expression]
+    $ print $[Previous value number]
+    $ print {[Type]}[Address]
+    $ print [First element]@[Element count]
+    $ print /[Format] [Expression]
+    ```
+
+17. 指定debug的文件：`file [executable filename]`（`gdb`命令可以不带参数单独执行，打开gdb控制台，然后用这个`file`命令来指定要debug的文件）
+
