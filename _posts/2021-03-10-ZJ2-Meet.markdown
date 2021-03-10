@@ -1,0 +1,36 @@
+---
+layout:     post
+title:      "ZJ2 Meet"
+subtitle:   "比去年有进步呢！"
+date:       2021-03-10 13:00:00
+author:     "AH"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - 面筋
+---
+
+疫情原因仍然担心签证无法出国，就投了实习留作后手。感动于去年某家公司走流程的速度（虽然是被拒），今年就先只投了这家，如果能顺利拿到offer就万事大吉，就算还是感谢信，再投其他家也不算晚。
+
+可能是有了一次实习经历，虽然感觉自己很多问题答得并不好，面试过程却意外顺利，现在已经快hr面了。
+
+## 时间线（面经都整理在牛客上了）：
+
+2.25 给hr小姐姐A发私信，投了简历，介绍了自己目前的情况
+
+2.28 hr小姐姐B约了一面时间
+
+3.2 一面+二面（当场才知道还有连着的二面），[面经戳这里](https://www.nowcoder.com/discuss/603854?source_id=profile_create_nctrack&channel=-1)
+
+3.3 接到hr小姐姐B的电话，说一面过了，打算和我约二面——我：二面已经面完了鸭
+
+3.4 hr小姐姐B电话告知二面也过了，约了三面时间
+
+3.8 三面，[面经戳这里](https://www.nowcoder.com/discuss/608458?source_id=profile_create_nctrack&channel=-1)
+
+3.9 hr小姐姐B说三面都过了，约了hr面时间
+
+3.10 hr面（还没开始）
+
+
+
+最后人工许愿一下offer！希望22岁之前再度成为光荣的打工人！
