@@ -5,6 +5,9 @@ search: false
 
 @charset "utf-8";
 
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
 h2 {
     font-size: 1.2rem;
 }
@@ -20,6 +23,3 @@ p,ul{
 .page__footer-copyright {
   text-align: center;
 }
-
-@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
-@import "minimal-mistakes"; // main partials
